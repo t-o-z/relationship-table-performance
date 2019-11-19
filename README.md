@@ -67,7 +67,16 @@ JOIN
 "        ->  Seq Scan on points end_points  (cost=0.00..33275.00 rows=2000000 width=8)"
 ```
 
-6433.8ms / 1,999,999 records
+
+* Add indexes
+
+```
+CREATE INDEX point_id_index ON points (point_id) ;
+CREATE INDEX relation_start_index ON relations (start_id) ;
+CREATE INDEX relation_end_index ON relations (end_id) ;
+```
+
+* 5320.1ms / 1,999,999 records
 
 ```
 "Hash Join  (cost=66091.70..291826.50 rows=2000000 width=12)"
@@ -80,19 +89,16 @@ JOIN
 "        ->  Seq Scan on points start_points  (cost=0.00..33275.00 rows=2000000 width=8)"
 ```
 
-* Add sequences
+* Add more indexes
 
 ```
-CREATE INDEX point_id_index ON points (point_id) ;
-CREATE INDEX relation_start_index ON relations (start_id) ;
-CREATE INDEX relation_end_index ON relations (end_id) ;
 CREATE INDEX relation_id_index ON relations (id) ;
 CREATE INDEX point_p_id_index ON points (id) ;
 CREATE INDEX relation_id_column_index ON relations (start_id, end_id) ;
 commit;
 ```
 
-5941.3ms / 1,999,999 records
+* 5941.3ms / 1,999,999 records
 
 ```
 "Hash Join  (cost=66091.70..291826.50 rows=2000000 width=12)"
@@ -104,4 +110,3 @@ commit;
 "  ->  Hash  (cost=33275.00..33275.00 rows=2000000 width=8)"
 "        ->  Seq Scan on points start_points  (cost=0.00..33275.00 rows=2000000 width=8)"
 ```
-
